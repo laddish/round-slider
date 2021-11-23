@@ -38,6 +38,9 @@ export declare class RoundSlider extends LitElement {
     private _cleanupRotation;
     dragEnd(_ev: MouseEvent | TouchEvent | FocusEvent): void;
     drag(ev: TouchEvent | MouseEvent): void;
+    private _calcAngle;
+    private _calcTheta;
+    private _calcAngle2xy;
     private _dragpos;
     private _keyStep;
     protected updated(changedProperties: PropertyValues): void;

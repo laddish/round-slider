@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Round-slider demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!--<script src="https://unpkg.com/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+    <script src="https://unpkg.com/@thomasloven/round-slider" type="module"></script>-->
+  <script src="round-slider.bundle.js" type="module"></script>
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    round-slider#pitch-control {
+      width: 115px;
+      max-width: 112px;
+      transition: all 1.3s ease-out 0s;
+      margin-left: 65px;
+
+    }
+
+    round-slider#pan-control {
+      width: 150px;
+      max-width: 150px;
+      transition: all 1.3s ease-out 0s;
+      margin-top: 25px;
+
+    }
+
+    round-slider {
+      width: 150px;
+      max-width: 200px;
+      transition: all 1.3s ease-out 0s;
+    }
+
+    .wrapper {
+      width: 200px;
+      height: 100%;
+      margin-top: 40px;
+    }
+
+    input[type="range"] {
+      transform: rotateZ(270deg);
+    }
+  </style>
+</head>
+
+<body class="w-full h-full relative  flex">
+  <div class="m-auto wrapper">
+
+    <div class="absolute z-50">
+      <round-slider id="pitch-control" valueLabel="俯仰角" value="90" arcLength="90" min="-90" max="90" startAngle="180"
+        rtl="true" style="
+    --round-slider-bar-color: rgba(211, 211, 211);
+    --round-slider-path-color: rgba(211, 211, 211);
+    --round-slider-handle-color: blue;
+    "></round-slider>
+    </div>
+
+
+    <div class="absolute z-10">
+      <round-slider id="pan-control" valueLabel="罗盘" value="0" min="0" max="360" arcLength="360" startAngle="-90"
+        rtl="true" style="
+    --round-slider-bar-color: rgba(211, 211, 211);
+    --round-slider-path-color: rgba(211, 211, 211);
+    --round-slider-handle-color: blue;
+    --round-slider-path-width:15;
+    "></round-slider>
+
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+  <script>
+    // const setValue = function (value, active) {
+    //   document.querySelectorAll("round-slider").forEach(function (el) {
+    //     if (el.value === undefined) return;
+    //     el.value = value;
+    //   });
+    //   const span = document.querySelector("#value");
+    //   span.innerHTML = value;
+    //   if (active) span.style.color = "red";
+    //   else span.style.color = "black";
+    // };
+    // const setLow = function (value, active) {
+    //   document.querySelectorAll("round-slider").forEach(function (el) {
+    //     if (el.low === undefined) return;
+    //     el.low = value;
+    //   });
+    //   const span = document.querySelector("#low");
+    //   span.innerHTML = value;
+    //   if (active) span.style.color = "red";
+    //   else span.style.color = "black";
+    // };
+    // const setHigh = function (value, active) {
+    //   document.querySelectorAll("round-slider").forEach(function (el) {
+    //     if (el.high === undefined) return;
+    //     el.high = value;
+    //   });
+    //   const span = document.querySelector("#high");
+    //   span.innerHTML = value;
+    //   if (active) span.style.color = "red";
+    //   else span.style.color = "black";
+    // };
+
+    document.querySelector("#pitch-control").addEventListener("value-changed", function (ev) {
+
+      console.log("value-changed", ev)
+      // if (ev.detail.value !== undefined) setValue(ev.detail.value, false);
+      // else if (ev.detail.low !== undefined) setLow(ev.detail.low, false);
+      // else if (ev.detail.high !== undefined) setHigh(ev.detail.high, false);
+    });
+
+
+    document.querySelector("#pan-control").addEventListener("value-changing", function (ev) {
+      // console.log("value-changing", ev)
+      console.log("--------------")
+      // if (ev.detail.value !== undefined) setValue(ev.detail.value, true);
+      // else if (ev.detail.low !== undefined) setLow(ev.detail.low, true);
+      // else if (ev.detail.high !== undefined) setHigh(ev.detail.high, true);
+    });
+  </script>
+</body>
+
+</html>

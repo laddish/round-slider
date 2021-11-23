@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Round-slider demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!--<script src="https://unpkg.com/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+    <script src="https://unpkg.com/@thomasloven/round-slider" type="module"></script>-->
+  <script src="round-slider.bundle.js" type="module"></script>
+  <link rel="stylesheet" href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" />
+  <!-- 生产环境版本，优化了尺寸和速度 -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <style>
+    body {
+      --round-slider-handle-color: #3b82f6;
+      /* background: green; */
+    }
+
+    round-slider#panControl {
+      width: 85px;
+      max-width: 85px;
+      transition: all 1.3s ease-out 0s;
+      margin-top: 25px;
+    }
+
+
+    .wrapper {
+      width: 100px;
+      height: 100%;
+    }
+
+    input[type="range"] {
+      transform: rotateZ(270deg);
+    }
+  </style>
+  <!-- pitchSlider 样式 -->
+  <style>
+    .pitchSlider input[type="range"] {
+      -webkit-appearance: none;
+      background-color: transparent;
+      border: 2px solid #e5e7eb;
+      height: 12px;
+      width: 85px;
+      border-radius: 15px;
+      outline: none;
+      transition: all 1.3s ease-out 0s;
+      margin-top: 60px;
+      margin-left: 55px;
+    }
+
+    .pitchSlider input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: var(--round-slider-handle-color);
+      transition: all 0.1s ease-out 0s;
+      transform-origin: center;
+    }
+
+    .pitchSlider input[type="range"]::-webkit-slider-thumb:hover {
+      width: 17px;
+      height: 17px;
+      box-shadow: 0px 0px 5px 0.01px var(--round-slider-handle-color);
+    }
+  </style>
+  <!-- arrow 样式 -->
+  <style>
+    .triangle-group {
+      /* background: #2c3e50; */
+      display: block;
+      width: 55px;
+      height: 55px;
+      margin-top: 40px;
+      margin-left: 15px
+    }
+
+    .triangle {
+      display: block;
+      width: 0px;
+      height: 0px;
+      position: absolute;
+      transition: all 0.2s ease-out 0s;
+    }
+
+
+    .triangle:hover {
+      transform: scale(1.1);
+    }
+
+    .triangle.up:hover {
+      border-bottom: 13px solid var(--round-slider-handle-color);
+    }
+
+    .triangle.left:hover {
+      border-right: 13px solid var(--round-slider-handle-color);
+    }
+
+    .triangle.down:hover {
+      border-top: 13px solid var(--round-slider-handle-color);
+    }
+
+    .triangle.right:hover {
+      border-left: 13px solid var(--round-slider-handle-color);
+    }
+
+    .triangle.up:active {
+      transform: translateY(1px);
+    }
+
+    .triangle.left:active {
+      transform: translateX(1px);
+    }
+
+    .triangle.down:active {
+      transform: translateY(-1px);
+    }
+
+    .triangle.right:active {
+      transform: translateX(-1px);
+    }
+
+    .triangle.up {
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 13px solid #e5e7eb;
+      top: 0;
+      left: 18px;
+      margin: auto;
+    }
+
+    .triangle.left {
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-right: 13px solid #e5e7eb;
+      top: 18px;
+      left: 0
+    }
+
+    .triangle.down {
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 13px solid #e5e7eb;
+      bottom: 0;
+      left: 18px;
+    }
+
+    .triangle.right {
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-left: 13px solid #e5e7eb;
+      top: 18px;
+      right: 0;
+    }
+  </style>
+
+  <!-- scaleSlider 样式 -->
+  <style>
+    .scaleSlider input[type="range"] {
+      -webkit-appearance: none;
+      /* border: 2px solid red; */
+      border: 2px solid transparent;
+      /* padding: 2px; */
+      height: 12px;
+      /* width: 85px; */
+      border-radius: 15px;
+      outline: none;
+      transition: all 1.3s ease-out 0s;
+      margin-top: 70px;
+      margin-left: -22px;
+      background: linear-gradient(to right, #e5e7eb 0%, #e5e7eb 50%, transparent 50%,
+          transparent 100%);
+      background-size: 10px;
+      background-clip: padding-box;
+      z-index: 1;
+    }
+
+    .scaleSlider input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: var(--round-slider-handle-color);
+      transition: all 0.1s ease-out 0s;
+      transform-origin: center;
+    }
+
+    .scaleSlider input[type="range"]::-webkit-slider-thumb:hover {
+      width: 17px;
+      height: 17px;
+      box-shadow: 0px 0px 5px 0.01px var(--round-slider-handle-color);
+    }
+
+    .scaleSlider input[type="range"]::before {
+      content: "";
+      display: block;
+      width: 20px;
+      height: 20px;
+      background: #e5e7eb;
+      background-image:
+        url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NDggNTEyIj4gPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTQxNiAyMDhIMzJjLTE3LjY3IDAtMzIgMTQuMzMtMzIgMzJ2MzJjMCAxNy42NyAxNC4zMyAzMiAzMiAzMmgzODRjMTcuNjcgMCAzMi0xNC4zMyAzMi0zMnYtMzJjMC0xNy42Ny0xNC4zMy0zMi0zMi0zMnoiPjwvcGF0aD4gPC9zdmc+);
+      background-size: contain;
+      transform: rotate(90deg);
+      background-position: center center;
+      border-radius: 50%;
+      position: absolute;
+      left: -4px;
+      top: -6px;
+      z-index: -10;
+    }
+
+    .scaleSlider input[type="range"]::after {
+      content: "";
+      display: block;
+      width: 20px;
+      height: 20px;
+      background: #e5e7eb;
+      background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NDggNTEyIj4gPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTQxNiAyMDhIMjcyVjY0YzAtMTcuNjctMTQuMzMtMzItMzItMzJoLTMyYy0xNy42NyAwLTMyIDE0LjMzLTMyIDMydjE0NEgzMmMtMTcuNjcgMC0zMiAxNC4zMy0zMiAzMnYzMmMwIDE3LjY3IDE0LjMzIDMyIDMyIDMyaDE0NHYxNDRjMCAxNy42NyAxNC4zMyAzMiAzMiAzMmgzMmMxNy42NyAwIDMyLTE0LjMzIDMyLTMyVjMwNGgxNDRjMTcuNjcgMCAzMi0xNC4zMyAzMi0zMnYtMzJjMC0xNy42Ny0xNC4zMy0zMi0zMi0zMnoiPjwvcGF0aD4gPC9zdmc+);
+      background-size: contain;
+      background-position: center center;
+
+      border-radius: 50%;
+      position: absolute;
+      right: -4px;
+      top: -6px;
+      z-index: -10;
+    }
+  </style>
+</head>
+
+<body class="w-full h-full relative flex">
+  <div id="app" class="m-auto wrapper">
+    <div class="absolute pitchSlider">
+      <input id="pitchSlider" v-model="pitch" type="range" name="pitchSlider" min="-90" max="90" />
+      <!-- <label for="pitchSlider">俯仰角</label> -->
+    </div>
+    <div class="absolute z-10">
+      <div class="absolute triangle-group">
+        <div class="triangle up" @click="moveXY('up')"></div>
+        <div class="triangle down" @click="moveXY('down')"></div>
+        <div class="triangle left" @click="moveXY('left')"></div>
+        <div class="triangle right" @click="moveXY('right')"></div>
+      </div>
+    </div>
+    <round-slider class="relative" id="panControl" valueLabel="罗盘" :value="pan" min="0" max="360" arcLength="360"
+      startAngle="-90" rtl="true" style="
+            --round-slider-bar-color: #e5e7eb;
+            --round-slider-path-color: #e5e7eb;
+            --round-slider-handle-color: #3b82f6;
+            --round-slider-path-width: 10;
+          ">
+    </round-slider>
+
+    <div class="absolute scaleSlider">
+      <input id="scaleSlider" v-model="scale" type="range" name="scaleSlider" min="0" max="100" />
+      <!-- <label for="pitchSlider">放大缩小</label> -->
+    </div>
+  </div>
+  </div>
+
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        pitch: 90,
+        pan: 0,
+        scale: 45
+      },
+      mounted() {
+        window["setPan"] = (val) => {
+          this.setPan(val);
+        }
+        window["setScale"] = (val) => {
+          this.setScale(val);
+        }
+      },
+      methods: {
+        setPan(val) {
+          this.pan = val
+        },
+        setScale(val) {
+          this.scale = val
+        },
+        moveXY(type) {
+          console.log("type", type)
+        }
+      }
+    })
+
+    // 这里调用tesla的方法
+    pitchSlider.oninput = function () {
+      console.log(pitchSlider.value)
+    }
+    scaleSlider.oninput = function () {
+      console.log(scaleSlider.value)
+    }
+    // tesla调用这个方法
+    function setPitch(val) {
+      // val 是字符串或数字 例如：-50或"-50"
+      console.log("pitch设置值", val)
+      pitchSlider.value = Number(val)
+    }
+    // tesla调用setPan
+
+    // 这里调用tesla的方法
+    panControl
+      .addEventListener("value-changing", function (ev) {
+        console.log("--------------");
+      });
+  </script>
+</body>
+
+</html>

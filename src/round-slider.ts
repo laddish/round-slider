@@ -272,15 +272,46 @@ export class RoundSlider extends LitElement {
     this._dragpos(pos);
   }
 
+  private _calcAngle(angle: number): number {
+    if(angle<180){
+      return angle+180
+    }else{
+      return angle-180
+    }
+  }
+  private _calcTheta(angle: number): number {
+    if(angle<Math.PI){
+      return angle+Math.PI
+    }else{
+      return angle-Math.PI
+    }
+  }
+
+  private _calcAngle2xy(angle: number): { x: number; y: number } {
+    return { x: Math.cos(angle), y: Math.sin(angle) };
+  }
+
   private _dragpos(pos: number): void {
     if (pos < this._rotation.min || pos > this._rotation.max) return;
 
     const handle = this._rotation.handle;
     this[handle.id] = pos;
+    console.log("value", this["value"]);
+    // const theta = this._value2angle(this["value"]);
+    // console.log("弧度", theta);
+    // const calcTheta = this._calcTheta(theta);
+    // console.log("计算弧度", calcTheta);
+    // const angle = (theta * 180) / Math.PI;
+    // console.log("角度", angle);
+    // const calcAngle = this._calcAngle(angle)
+    // console.log("计算角度", calcAngle);
+    // const xy = this._calcAngle2xy(calcTheta);
+    // console.log("计算xy", xy);
 
     let event = new CustomEvent("value-changing", {
       detail: {
         [handle.id]: pos,
+        // xy,
       },
       bubbles: true,
       composed: true,
@@ -372,13 +403,16 @@ export class RoundSlider extends LitElement {
 
   private _renderHandle(id: string): SVGTemplateResult {
     const theta = this._value2angle(this[id]);
+    // console.log("theta",theta)
     const pos = this._angle2xy(theta);
+    // console.log("pos",pos)
     const label =
       {
         value: this.valueLabel,
         low: this.lowLabel,
         high: this.highLabel,
       }[id] || "";
+    // console.log("label",label)
 
     // Two handles are drawn. One visible, and one invisible that's twice as
     // big. Makes it easier to click.
